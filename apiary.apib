@@ -1,0 +1,1813 @@
+FORMAT: 1A
+
+# MTC Progress Client API
+This document is being used a quick an easy way to document MT3 current Gradebook Services API.
+
+# Group User and Course Information
+General user and course information required for the initial starting point.
+
+## API [/api]
+### Hypermedia API [GET]
++ Response 200 (application/json)
+
+        {
+            "_link":{
+                    "self": {
+                        "href": "http://private-857c47-classicmtgradebookservices.apiary-mock.com/api"
+                    },
+                    "activeUserInfo": {
+                        "href": "http://private-857c47-classicmtgradebookservices.apiary-mock.com/progressapp/service/user/short/me"
+                    },
+                    "activeUserSettings": {
+                        "href": "http://private-857c47-classicmtgradebookservices.apiary-mock.com/nb/service/userSettings?jsonKey=:jsonKey"
+                    },
+                    "singleUserInfo": {
+                        "href": "http://private-857c47-classicmtgradebookservices.apiary-mock.com/progressapp/service/user/short/:snapshotId/:userId"
+                    },
+                    "courseInfo": {
+                        "href": "http://private-857c47-classicmtgradebookservices.apiary-mock.com/progressapp/service/courseInfo/:snapshotId"
+                    },
+                    "activityTree": {
+                        "href": "http://private-857c47-classicmtgradebookservices.apiary-mock.com/progressapp/service/itemsTreeWithSummaries/:snapshotId"
+                    },
+                    "activityGrouping": {
+                        "href": "http://private-857c47-classicmtgradebookservices.apiary-mock.com/progressapp/service/groupedItems/:snapshotId"
+                    },
+                    "activityCategoriesAndWeighting": {
+                        "href": "http://private-857c47-classicmtgradebookservices.apiary-mock.com/progressapp/service/bulk/itemsByCategory/:snapshotId"
+                    },
+                    "activityOverridesAllStudents": {
+                        "href": "http://private-857c47-classicmtgradebookservices.apiary-mock.com/progressapp/service/items/useroverride/:snapshotId"
+                    },
+                    "allActivityCommentsSingleStudent": {
+                        "href": "http://private-857c47-classicmtgradebookservices.apiary-mock.com/nb/service/activityComment/snapshot/:snapshotId/user/:userId"
+                    },
+                    "allActivityFeatures": {
+                        "href": "http://private-857c47-classicmtgradebookservices.apiary-mock.com/progressapp/service/appActivities/:snapshotId"
+                    },
+                    "courseScoreAllStudents": {
+                        "href": "http://private-857c47-classicmtgradebookservices.apiary-mock.com/progressapp/service/studentSummaries/:snapshotId"
+                    },
+                    "courseScoreSingleStudent": {
+                        "href": "http://private-857c47-classicmtgradebookservices.apiary-mock.com/progressapp/service/studentSummaries/:snapshotId/user/:userId"
+                    },
+                    "activityScoresRangeOfStudents": {
+                        "href": "http://private-857c47-classicmtgradebookservices.apiary-mock.com/progressapp/service/outcome/:snapshotId?userIds=[:userIds]"
+                    },
+                    "activityAttemptsSingleStudent": {
+                        "href": "http://private-857c47-classicmtgradebookservices.apiary-mock.com/progressapp/service/:snapshotId/attempt/:activityId/user/:userId"
+                    },
+                    "activityCommentsSingleStudent": {
+                        "href": "http://private-857c47-classicmtgradebookservices.apiary-mock.com/nb/service/activityComment/find?userId=:userId&activityId=:activityId&sort=lastModifiedDate+desc"
+                    },
+                    "studentScoreBreakDown": {
+                        "href": "http://private-857c47-classicmtgradebookservices.apiary-mock.com/progressapp/service/scores/:snapshotId/user/:userId/summary"
+                    },
+                    "myScoreBreakDown": {
+                        "href": "http://private-857c47-classicmtgradebookservices.apiary-mock.com/progressapp/service/scores/:snapshotId/user/me/summary"
+                    },
+                    "provisionedApps": {
+                        "href": "http://private-857c47-classicmtgradebookservices.apiary-mock.com/nb/service/appAction/snapshot/:snapshotId/apps"
+                    }
+            }
+        }
+
+## User Info [/progressapp/service/user/short/me]
+### List current user information [GET]
++ Response 200 (application/json)
+    
+    + Body
+    
+            {
+                "firstName": "Mock",
+                "lastName": "Instructor",
+                "sourceId": "5cdc7afabbc6f418:30867170:13d8e896024:-7882",
+                "userId": 8,
+                "role": "INSTRUCTOR",
+                "email": "mock_inst11@qai.com",
+                "token": "1419011062303:67aa92c678dd1b23cd1488dd42809c3670737d04"
+            }
+    
+    + Schema
+    
+            {
+                "type": "object",
+                "required": false,
+                "properties": {
+                    "firstName": {
+                        "type": "string",
+                        "required": true
+                    },
+                    "lastName": {
+                        "type": "string",
+                        "required": true
+                    }
+                }
+            }
+
+## Course Info [/progressapp/service/courseInfo/{snapshotId}]
+General course information, along with gradebook specific data.
+### List current course information [GET]
++ Response 200 (application/json)
+
+        {
+          "startDate": 1420693200000,
+          "endDate": 1493697599000,
+          "isMaster": false,
+          "courseKey": "MTPNQ7PPP27M",
+          "timezone": "America/New_York",
+          "timezoneCd": "EDT",
+          "snapshotId": 4,
+          "isbn": "9781133354215",
+          "numStudents": 1,
+          "scoreAverage": 80
+        }
+        
+## Deployed Apps [/nb/service/appAction/snapshot/{snapshotId}/apps]
+Provides client with knowledge on what apps are deployed in the course.
+### List deployed apps for current course [GET]
++ Response 200 (application/json)
+
+        [{
+            "uid": 5,
+            "id": 5,
+            "name": "Cengage.Assignment",
+            "displayName": "Assignments",
+            "appVersion": "1.0",
+            "creator": "Cengage Learning",
+            "rootURI": "\/static\/nbapps\/aa",
+            "helpURI": "\/static\/nbapps\/aa\/help.html",
+            "provisionType": "automatic",
+            "deployMode": "course",
+            "authScheme": "NONE",
+            "createdDate": 1401996578707,
+            "createdBy": 1,
+            "modifiedDate": 1401996578753,
+            "modifiedBy": 1,
+            "supportReactivate": false,
+            "ltiCompliant": false,
+            "sharedSecret": false,
+            "features": {
+                "supportsPerStudentEndDate": true,
+                "allowReviewWithoutTakes": true
+            }
+        }, {
+            "uid": 6,
+            "id": 6,
+            "name": "Cengage.Blog",
+            "displayName": "Blog",
+            "appVersion": "1.0",
+            "creator": "Cengage Learning",
+            "rootURI": "\/static\/iloveapps\/blog",
+            "helpURI": "\/static\/iloveapps\/blog\/help.html",
+            "provisionType": "automatic",
+            "deployMode": "course",
+            "authScheme": "NONE",
+            "createdDate": 1401996578785,
+            "createdBy": 1,
+            "modifiedDate": 1401996578814,
+            "modifiedBy": 1,
+            "supportReactivate": false,
+            "ltiCompliant": false,
+            "sharedSecret": false,
+            "categories": ["None"],
+            "features": {}
+        }, {
+            "uid": 7,
+            "id": 7,
+            "name": "Cengage.Evernote",
+            "displayName": "Notebook",
+            "appVersion": "1.0",
+            "creator": "Cengage Learning",
+            "rootURI": "\/static\/iloveapps\/evernote",
+            "helpURI": "\/static\/iloveapps\/evernote\/help.html",
+            "provisionType": "automatic",
+            "deployMode": "course",
+            "authScheme": "NONE",
+            "createdDate": 1401996578841,
+            "createdBy": 1,
+            "modifiedDate": 1401996578866,
+            "modifiedBy": 1,
+            "supportReactivate": false,
+            "ltiCompliant": false,
+            "sharedSecret": false,
+            "categories": ["None"],
+            "features": {}
+        }, {
+            "uid": 8,
+            "id": 8,
+            "name": "Cengage.FlashCard",
+            "displayName": "Flashcards",
+            "appVersion": "1.0",
+            "creator": "Cengage Learning",
+            "rootURI": "\/static\/iloveapps\/flashcard",
+            "helpURI": "\/static\/iloveapps\/flashcard\/help.html",
+            "provisionType": "automatic",
+            "deployMode": "course",
+            "authScheme": "CENGAGE_SSO",
+            "createdDate": 1401996578930,
+            "createdBy": 1,
+            "modifiedDate": 1401996578966,
+            "modifiedBy": 1,
+            "supportReactivate": false,
+            "ltiCompliant": false,
+            "sharedSecret": false,
+            "categories": ["None"],
+            "features": {}
+        }, {
+            "uid": 4,
+            "id": 4,
+            "name": "Cengage.Glossary",
+            "displayName": "Glossary",
+            "appVersion": "1.0",
+            "creator": "Cengage Learning",
+            "rootURI": "\/static\/nbapps\/glossary",
+            "helpURI": "\/static\/nbapps\/glossary\/help.html",
+            "provisionType": "mandatory",
+            "deployMode": "both",
+            "authScheme": "NONE",
+            "createdDate": 1401996578608,
+            "createdBy": 1,
+            "modifiedDate": 1401996578631,
+            "modifiedBy": 1,
+            "supportReactivate": false,
+            "ltiCompliant": false,
+            "sharedSecret": false,
+            "categories": ["None"],
+            "features": {}
+        }, {
+            "uid": 9,
+            "id": 9,
+            "name": "Cengage.Google.Doc",
+            "displayName": "Google Drive",
+            "appVersion": "1.0",
+            "creator": "Cengage Learning",
+            "rootURI": "\/static\/iloveapps\/googledoc",
+            "helpURI": "\/static\/iloveapps\/googledoc\/help.html",
+            "provisionType": "automatic",
+            "deployMode": "course",
+            "authScheme": "CENGAGE_SSO",
+            "createdDate": 1401996579015,
+            "createdBy": 1,
+            "modifiedDate": 1401996579051,
+            "modifiedBy": 1,
+            "supportReactivate": false,
+            "ltiCompliant": false,
+            "sharedSecret": false,
+            "categories": ["None"],
+            "features": {}
+        }, {
+            "uid": 10,
+            "id": 10,
+            "name": "Cengage.Kaltura",
+            "displayName": "Kaltura",
+            "appVersion": "1.0",
+            "creator": "Cengage Learning",
+            "rootURI": "\/static\/iloveapps\/kaltura",
+            "helpURI": "\/static\/iloveapps\/kaltura\/help.html",
+            "provisionType": "automatic",
+            "deployMode": "course",
+            "authScheme": "CENGAGE_SSO",
+            "createdDate": 1401996579110,
+            "createdBy": 1,
+            "modifiedDate": 1401996579142,
+            "modifiedBy": 1,
+            "supportReactivate": false,
+            "ltiCompliant": false,
+            "sharedSecret": false,
+            "categories": ["None"],
+            "features": {}
+        }, {
+            "uid": 14,
+            "id": 14,
+            "name": "Cengage.Maps",
+            "displayName": "Maps",
+            "appVersion": "1.0",
+            "creator": "Cengage Learning",
+            "rootURI": "\/static\/iloveapps\/maps",
+            "helpURI": "\/static\/iloveapps\/maps\/help.html",
+            "provisionType": "automatic",
+            "deployMode": "course",
+            "authScheme": "OPEN_ID",
+            "createdDate": 1401996579533,
+            "createdBy": 1,
+            "modifiedDate": 1401996579567,
+            "modifiedBy": 1,
+            "supportReactivate": false,
+            "ltiCompliant": false,
+            "sharedSecret": false,
+            "features": {}
+        }, {
+            "uid": 3,
+            "id": 3,
+            "name": "Cengage.Media",
+            "displayName": "Media",
+            "appVersion": "1.0",
+            "creator": "Cengage Learning",
+            "rootURI": "\/",
+            "helpURI": "\/static\/nbapps\/media\/help.html",
+            "provisionType": "mandatory",
+            "deployMode": "both",
+            "authScheme": "CENGAGE_SSO",
+            "createdDate": 1401996578544,
+            "createdBy": 1,
+            "modifiedDate": 1401996578579,
+            "modifiedBy": 1,
+            "supportReactivate": false,
+            "ltiCompliant": false,
+            "sharedSecret": false,
+            "categories": ["None"],
+            "features": {}
+        }, {
+            "uid": 2,
+            "id": 2,
+            "name": "Cengage.Notepad",
+            "displayName": "Highlights",
+            "appVersion": "1.0",
+            "creator": "Cengage Learning",
+            "rootURI": "\/",
+            "helpURI": "\/help.html",
+            "provisionType": "mandatory",
+            "deployMode": "both",
+            "authScheme": "NONE",
+            "createdDate": 1401996578398,
+            "createdBy": 1,
+            "modifiedDate": 1401996578450,
+            "modifiedBy": 1,
+            "supportReactivate": false,
+            "ltiCompliant": false,
+            "sharedSecret": false,
+            "categories": ["None"],
+            "features": {}
+        }, {
+            "uid": 16,
+            "id": 16,
+            "name": "Cengage.Progress",
+            "displayName": "Progress",
+            "appVersion": "1.0",
+            "creator": "Cengage Learning",
+            "rootURI": "http:\/\/localhost:20000\/",
+            "helpURI": "http:\/\/localhost:20000\/help.html",
+            "provisionType": "automatic",
+            "deployMode": "both",
+            "authScheme": "CENGAGE_SSO",
+            "createdDate": 1410807394715,
+            "createdBy": 1,
+            "modifiedDate": 1410807394826,
+            "modifiedBy": 1,
+            "supportReactivate": false,
+            "ltiCompliant": false,
+            "ltiConsumerKey": "",
+            "sharedSecret": false,
+            "categories": ["None"],
+            "features": {}
+        }, {
+            "uid": 11,
+            "id": 11,
+            "name": "Cengage.ReadSpeaker",
+            "displayName": "ReadSpeaker",
+            "appVersion": "1.0",
+            "creator": "Cengage Learning",
+            "rootURI": "\/static\/iloveapps\/readspeaker",
+            "helpURI": "\/static\/iloveapps\/readspeaker\/help.html",
+            "provisionType": "automatic",
+            "deployMode": "course",
+            "authScheme": "NONE",
+            "createdDate": 1401996579194,
+            "createdBy": 1,
+            "modifiedDate": 1401996579219,
+            "modifiedBy": 1,
+            "supportReactivate": false,
+            "ltiCompliant": false,
+            "sharedSecret": false,
+            "categories": ["None"],
+            "features": {}
+        }, {
+            "uid": 1,
+            "id": 1,
+            "name": "Cengage.Reader",
+            "displayName": "Reader",
+            "appVersion": "1.0",
+            "creator": "Cengage Learning",
+            "rootURI": "\/",
+            "helpURI": "\/help.html",
+            "provisionType": "mandatory",
+            "deployMode": "both",
+            "authScheme": "CENGAGE_SSO",
+            "createdDate": 1401996578159,
+            "createdBy": 1,
+            "modifiedDate": 1401996578347,
+            "modifiedBy": 1,
+            "supportReactivate": false,
+            "ltiCompliant": false,
+            "sharedSecret": false,
+            "categories": ["None"],
+            "features": {}
+        }, {
+            "uid": 12,
+            "id": 12,
+            "name": "WebVideo.App",
+            "displayName": "WebVideo App",
+            "appVersion": "0.1",
+            "creator": "Cengage Learning",
+            "rootURI": "\/static\/iloveapps\/webvideo",
+            "helpURI": "\/static\/iloveapps\/webvideo\/help.html",
+            "provisionType": "automatic",
+            "deployMode": "course",
+            "authScheme": "OPEN_ID",
+            "createdDate": 1401996579359,
+            "createdBy": 1,
+            "modifiedDate": 1401996579391,
+            "modifiedBy": 1,
+            "supportReactivate": false,
+            "ltiCompliant": false,
+            "sharedSecret": false,
+            "features": {}
+        }, {
+            "uid": 17,
+            "id": 17,
+            "name": "ZTest",
+            "displayName": "ZTest",
+            "appVersion": "1.0",
+            "creator": "Cengage Learning",
+            "rootURI": "http:\/\/localhost\/ztest\/",
+            "helpURI": "http:\/\/localhost\/ztest\/help.html",
+            "provisionType": "optional",
+            "authScheme": "OPEN_ID_WITH_SSO",
+            "createdDate": 1410898434711,
+            "createdBy": 1,
+            "modifiedDate": 1412104835183,
+            "modifiedBy": 1,
+            "supportReactivate": true,
+            "ltiCompliant": false,
+            "ltiConsumerKey": "",
+            "sharedSecret": true,
+            "categories": ["None"],
+            "features": {
+                "supportsPerStudentEndDate": true
+            }
+        }, {
+            "uid": 15,
+            "id": 15,
+            "name": "mindapp-cxp",
+            "displayName": "MindApp CXP",
+            "appVersion": "1.0",
+            "creator": "Cengage Learning",
+            "rootURI": "\/mindapp-cxp",
+            "helpURI": "\/mindapp-cxp",
+            "provisionType": "optional",
+            "authScheme": "NONE",
+            "createdDate": 1401996743849,
+            "createdBy": 1,
+            "modifiedDate": 1401996743895,
+            "modifiedBy": 1,
+            "supportReactivate": true,
+            "ltiCompliant": false,
+            "ltiConsumerKey": "",
+            "sharedSecret": false,
+            "features": {
+                "supportsPerStudentEndDate": true,
+                "allowReviewWithoutTakes": true
+            }
+        }]
+
+## User Settings [/nb/service/userSettings?jsonKey={settingKeyValue}]
+This is used to set UI preferences, so that they're remembered on next login.
+### Current course user settings [GET]
++ Response 200 (application/json)
+
+        {"value":false}
+
+# Group Activity Information
+These ends points provide general information on course activities, along with gradebook specific data.
+## Grouped Activities [/progressapp/service/groupedItems/{snapshotId} ]
+### List activities and their groupings [GET]
++ Response 200 (application/json)
+
+        {
+            "groups": [{
+                "name": "Unit 1: The Atlantic World, 1492–1600",
+                "itemIds": [358, 359, 360, 384, 385, 387, 388, 474, 509]
+            }, {
+                "name": "Unit 2: Contact and Exploration, 1492–1565",
+                "itemIds": [510]
+            }, {
+                "name": "",
+                "itemIds": [361, 362]
+            }],
+            "items": [{
+                "id": 361,
+                "name": "5.1 Picturing History",
+                "description": "5.1 Picturing History",
+                "nodeType": "Activity",
+                "activityType": 2,
+                "appActivityId": 19,
+                "isCountsTowardFinalGrade": true,
+                "maxPoints": 10,
+                "pointsPossible": 10,
+                "isTimed": false,
+                "endDate": 1402974000000,
+                "maxAttempts": 1,
+                "scoreStrategy": 1,
+                "isManuallyGraded": true,
+                "isExtended": false,
+                "refId": "d2f5ef67-0efc-4ef1-beb0-7ae3a2e0a550",
+                "isGradebookItem": true,
+                "attemptsToGrade": 5,
+                "numSubmissions": 0,
+                "classAverage": 0,
+                "activityPath": "CXP:\/\/mtng_history\/henley_hist\/5.1.xml"
+            }, {
+                "id": 362,
+                "name": "5.2 The Common People",
+                "description": "5.2 The Common People",
+                "nodeType": "Activity",
+                "activityType": 2,
+                "appActivityId": 19,
+                "isCountsTowardFinalGrade": true,
+                "maxPoints": 1,
+                "pointsPossible": 1,
+                "isTimed": false,
+                "endDate": 1402974000000,
+                "maxAttempts": 1,
+                "scoreStrategy": 1,
+                "isManuallyGraded": false,
+                "isExtended": false,
+                "refId": "288e28bd-6365-435c-9de7-7c4a5de7fd62",
+                "isGradebookItem": true,
+                "activityPath": "CXP:\/\/mtng_history\/henley_hist\/5.2.xml"
+            }, {
+                "id": 358,
+                "name": "2.1 Picturing History",
+                "description": "2.1 Picturing History",
+                "nodeType": "Activity",
+                "activityType": 2,
+                "appActivityId": 19,
+                "isCountsTowardFinalGrade": true,
+                "maxPoints": 10,
+                "pointsPossible": 10,
+                "isTimed": false,
+                "endDate": 1402974000000,
+                "maxAttempts": 1,
+                "scoreStrategy": 1,
+                "isManuallyGraded": true,
+                "isExtended": false,
+                "refId": "1540ae25-8696-4758-880c-d89b892774da",
+                "isGradebookItem": true,
+                "attemptsToGrade": 0,
+                "numSubmissions": 0,
+                "activityPath": "CXP:\/\/mtng_history\/henley_hist\/2.1.xml"
+            }, {
+                "id": 359,
+                "name": "2.2 The First Americans",
+                "description": "2.2 The First Americans",
+                "nodeType": "Activity",
+                "activityType": 2,
+                "appActivityId": 19,
+                "isCountsTowardFinalGrade": true,
+                "maxPoints": 4,
+                "pointsPossible": 4,
+                "isTimed": false,
+                "endDate": 1402974000000,
+                "maxAttempts": 1,
+                "scoreStrategy": 1,
+                "isManuallyGraded": false,
+                "isExtended": false,
+                "refId": "60d9f93c-c0de-44af-9cda-ee1c96ab560a",
+                "isGradebookItem": true,
+                "attemptsToGrade": 0,
+                "numSubmissions": 0,
+                "activityPath": "CXP:\/\/mtng_history\/henley_hist\/2.2.xml"
+            }, {
+                "id": 360,
+                "name": "2.3 The Rise of New World Slavery",
+                "description": "2.3 The Rise of New World Slavery",
+                "nodeType": "Activity",
+                "activityType": 2,
+                "appActivityId": 19,
+                "isCountsTowardFinalGrade": true,
+                "maxPoints": 3,
+                "pointsPossible": 3,
+                "isTimed": false,
+                "endDate": 1407985200000,
+                "maxAttempts": 1,
+                "scoreStrategy": 1,
+                "isManuallyGraded": false,
+                "isExtended": true,
+                "refId": "3c1c9ce8-a1fb-49d6-8ed6-5dc4e380ec8a",
+                "isGradebookItem": true,
+                "attemptsToGrade": 0,
+                "numSubmissions": 0,
+                "classAverage": 33.31,
+                "activityPath": "CXP:\/\/mtng_history\/henley_hist\/2.3.xml"
+            }, {
+                "id": 384,
+                "name": "1.7 Study Guide",
+                "description": "1.7 Study Guide",
+                "nodeType": "Activity",
+                "activityType": 2,
+                "appActivityId": 19,
+                "isCountsTowardFinalGrade": true,
+                "maxPoints": 25,
+                "pointsPossible": 25,
+                "isTimed": false,
+                "endDate": 1404270000000,
+                "maxAttempts": 1,
+                "scoreStrategy": 1,
+                "isManuallyGraded": false,
+                "isExtended": false,
+                "refId": "174ba2bb-65d5-4d97-be05-93dd95bcd808",
+                "isGradebookItem": true,
+                "attemptsToGrade": 0,
+                "numSubmissions": 0,
+                "classAverage": 96,
+                "activityPath": "CXP:\/\/mtng_history\/review_challenge_hist\/1.7.xml"
+            }, {
+                "id": 385,
+                "name": "1.6 Getting to the Source: Political Lens",
+                "description": "1.6 Getting to the Source: Political Lens",
+                "nodeType": "Activity",
+                "activityType": 2,
+                "appActivityId": 19,
+                "isCountsTowardFinalGrade": true,
+                "maxPoints": 8,
+                "pointsPossible": 8,
+                "isTimed": false,
+                "endDate": 1405393200000,
+                "maxAttempts": 1,
+                "scoreStrategy": 1,
+                "isManuallyGraded": false,
+                "isExtended": false,
+                "refId": "36c98110-edb0-424b-bde4-cf5a6a01e16b",
+                "isGradebookItem": true,
+                "attemptsToGrade": 0,
+                "numSubmissions": 1,
+                "classAverage": 12.5,
+                "activitySubtype": "cxp",
+                "activityPath": "CXP:\/\/mtng_history\/henley_hist\/psa_1_pol.xml"
+            }, {
+                "id": 387,
+                "name": "3.6 Why Does This Matter? Essay Activity: Political Lens",
+                "description": "3.6 Why Does This Matter? Essay Activity: Political Lens",
+                "nodeType": "Activity",
+                "activityType": 2,
+                "appActivityId": 19,
+                "isCountsTowardFinalGrade": true,
+                "maxPoints": 10,
+                "pointsPossible": 10,
+                "isTimed": false,
+                "endDate": 1407380400000,
+                "maxAttempts": 1,
+                "scoreStrategy": 1,
+                "isManuallyGraded": true,
+                "isExtended": false,
+                "refId": "b32d1871-5524-41e1-a1fe-5ad8f8f5d076",
+                "isGradebookItem": true,
+                "attemptsToGrade": 0,
+                "numSubmissions": 0,
+                "activitySubtype": "cxp",
+                "activityPath": "CXP:\/\/mtng_history\/henley_hist\/essay_3_pol.xml"
+            }, {
+                "id": 388,
+                "name": "9.3 Parties and Philosophies",
+                "description": "9.3 Parties and Philosophies",
+                "nodeType": "Activity",
+                "activityType": 2,
+                "appActivityId": 19,
+                "isCountsTowardFinalGrade": true,
+                "maxPoints": 3,
+                "pointsPossible": 3,
+                "isTimed": false,
+                "maxAttempts": 1,
+                "scoreStrategy": 1,
+                "isManuallyGraded": false,
+                "isExtended": false,
+                "refId": "036705b3-ea44-4fc9-8450-0d5b684d5cc6",
+                "isGradebookItem": true,
+                "attemptsToGrade": 0,
+                "numSubmissions": 1,
+                "classAverage": 0,
+                "activitySubtype": "cxp",
+                "activityPath": "CXP:\/\/mtng_history\/henley_hist\/9.3.xml"
+            }, {
+                "id": 474,
+                "name": "MATT",
+                "description": "TEST",
+                "nodeType": "Activity",
+                "activityType": 2,
+                "appActivityId": 23,
+                "isCountsTowardFinalGrade": true,
+                "maxPoints": 100,
+                "pointsPossible": 100,
+                "isTimed": false,
+                "endDate": 1412132400000,
+                "maxAttempts": 2,
+                "scoreStrategy": 1,
+                "isManuallyGraded": false,
+                "isExtended": false,
+                "refId": "ztest-d3aecac6-6c6f-b649e",
+                "isGradebookItem": true,
+                "attemptsToGrade": 0,
+                "numSubmissions": 1,
+                "classAverage": 84,
+                "activitySubtype": ""
+            }, {
+                "id": 509,
+                "name": "Hello world",
+                "description": "",
+                "nodeType": "Activity",
+                "activityType": 2,
+                "appActivityId": 21,
+                "isCountsTowardFinalGrade": true,
+                "maxPoints": 100,
+                "pointsPossible": 100,
+                "isTimed": false,
+                "endDate": 1412046000000,
+                "maxAttempts": 3,
+                "scoreStrategy": 1,
+                "isManuallyGraded": false,
+                "isExtended": false,
+                "refId": "ztest-a803739d-a37a-faa46",
+                "isGradebookItem": true,
+                "attemptsToGrade": 0,
+                "numSubmissions": 1,
+                "activitySubtype": ""
+            }, {
+                "id": 510,
+                "name": "3.6 Why Does This Matter? Essay Activity: Political Lens",
+                "description": "3.6 Why Does This Matter? Essay Activity: Political Lens",
+                "nodeType": "Activity",
+                "activityType": 2,
+                "appActivityId": 19,
+                "isCountsTowardFinalGrade": true,
+                "maxPoints": 10,
+                "pointsPossible": 10,
+                "isTimed": false,
+                "endDate": 1412132400000,
+                "maxAttempts": 1,
+                "scoreStrategy": 1,
+                "isManuallyGraded": true,
+                "isExtended": false,
+                "refId": "9abb2536-ff1c-4cdc-8004-30519fd2f4d6",
+                "isGradebookItem": true,
+                "attemptsToGrade": 0,
+                "numSubmissions": 0,
+                "classAverage": 0,
+                "activitySubtype": "cxp",
+                "activityPath": "CXP:\/\/mtng_history\/henley_hist\/essay_3_pol.xml"
+            }]
+        }
+        
+## Item Tree [/progressapp/service/itemsTreeWithSummaries/{snapshotId} ]
+### List all LPN tree nodes with a seperate list of activities  [GET]
++ Response 200 (application/json)
+
+        {
+            "children": [{
+                "id": 202,
+                "name": "History MTx",
+                "nodeType": "LearningPath",
+                "children": [{
+                    "id": 203,
+                    "name": "Unit 1: The Atlantic World, 1492–1600",
+                    "nodeType": "LearningUnit",
+                    "children": [{
+                        "id": 358,
+                        "name": "2.1 Picturing History",
+                        "description": "2.1 Picturing History",
+                        "nodeType": "Activity",
+                        "activityType": 2,
+                        "appActivityId": 19,
+                        "isCountsTowardFinalGrade": true,
+                        "maxPoints": 10,
+                        "pointsPossible": 10,
+                        "isTimed": false,
+                        "endDate": 1402974000000,
+                        "maxAttempts": 1,
+                        "scoreStrategy": 1,
+                        "isManuallyGraded": true,
+                        "isExtended": false,
+                        "refId": "1540ae25-8696-4758-880c-d89b892774da",
+                        "isGradebookItem": true,
+                        "attemptsToGrade": 0,
+                        "numSubmissions": 0,
+                        "activityPath": "CXP:\/\/mtng_history\/henley_hist\/2.1.xml"
+                    }, {
+                        "id": 359,
+                        "name": "2.2 The First Americans",
+                        "description": "2.2 The First Americans",
+                        "nodeType": "Activity",
+                        "activityType": 2,
+                        "appActivityId": 19,
+                        "isCountsTowardFinalGrade": true,
+                        "maxPoints": 4,
+                        "pointsPossible": 4,
+                        "isTimed": false,
+                        "endDate": 1402974000000,
+                        "maxAttempts": 1,
+                        "scoreStrategy": 1,
+                        "isManuallyGraded": false,
+                        "isExtended": false,
+                        "refId": "60d9f93c-c0de-44af-9cda-ee1c96ab560a",
+                        "isGradebookItem": true,
+                        "attemptsToGrade": 0,
+                        "numSubmissions": 0,
+                        "activityPath": "CXP:\/\/mtng_history\/henley_hist\/2.2.xml"
+                    }, {
+                        "id": 360,
+                        "name": "2.3 The Rise of New World Slavery",
+                        "description": "2.3 The Rise of New World Slavery",
+                        "nodeType": "Activity",
+                        "activityType": 2,
+                        "appActivityId": 19,
+                        "isCountsTowardFinalGrade": true,
+                        "maxPoints": 3,
+                        "pointsPossible": 3,
+                        "isTimed": false,
+                        "endDate": 1407985200000,
+                        "maxAttempts": 1,
+                        "scoreStrategy": 1,
+                        "isManuallyGraded": false,
+                        "isExtended": true,
+                        "refId": "3c1c9ce8-a1fb-49d6-8ed6-5dc4e380ec8a",
+                        "isGradebookItem": true,
+                        "attemptsToGrade": 0,
+                        "numSubmissions": 0,
+                        "classAverage": 33.31,
+                        "activityPath": "CXP:\/\/mtng_history\/henley_hist\/2.3.xml"
+                    }, {
+                        "id": 384,
+                        "name": "1.7 Study Guide",
+                        "description": "1.7 Study Guide",
+                        "nodeType": "Activity",
+                        "activityType": 2,
+                        "appActivityId": 19,
+                        "isCountsTowardFinalGrade": true,
+                        "maxPoints": 25,
+                        "pointsPossible": 25,
+                        "isTimed": false,
+                        "endDate": 1404270000000,
+                        "maxAttempts": 1,
+                        "scoreStrategy": 1,
+                        "isManuallyGraded": false,
+                        "isExtended": false,
+                        "refId": "174ba2bb-65d5-4d97-be05-93dd95bcd808",
+                        "isGradebookItem": true,
+                        "attemptsToGrade": 0,
+                        "numSubmissions": 0,
+                        "classAverage": 96,
+                        "activityPath": "CXP:\/\/mtng_history\/review_challenge_hist\/1.7.xml"
+                    }, {
+                        "id": 385,
+                        "name": "1.6 Getting to the Source: Political Lens",
+                        "description": "1.6 Getting to the Source: Political Lens",
+                        "nodeType": "Activity",
+                        "activityType": 2,
+                        "appActivityId": 19,
+                        "isCountsTowardFinalGrade": true,
+                        "maxPoints": 8,
+                        "pointsPossible": 8,
+                        "isTimed": false,
+                        "endDate": 1405393200000,
+                        "maxAttempts": 1,
+                        "scoreStrategy": 1,
+                        "isManuallyGraded": false,
+                        "isExtended": false,
+                        "refId": "36c98110-edb0-424b-bde4-cf5a6a01e16b",
+                        "isGradebookItem": true,
+                        "attemptsToGrade": 0,
+                        "numSubmissions": 1,
+                        "classAverage": 12.5,
+                        "activitySubtype": "cxp",
+                        "activityPath": "CXP:\/\/mtng_history\/henley_hist\/psa_1_pol.xml"
+                    }, {
+                        "id": 387,
+                        "name": "3.6 Why Does This Matter? Essay Activity: Political Lens",
+                        "description": "3.6 Why Does This Matter? Essay Activity: Political Lens",
+                        "nodeType": "Activity",
+                        "activityType": 2,
+                        "appActivityId": 19,
+                        "isCountsTowardFinalGrade": true,
+                        "maxPoints": 10,
+                        "pointsPossible": 10,
+                        "isTimed": false,
+                        "endDate": 1407380400000,
+                        "maxAttempts": 1,
+                        "scoreStrategy": 1,
+                        "isManuallyGraded": true,
+                        "isExtended": false,
+                        "refId": "b32d1871-5524-41e1-a1fe-5ad8f8f5d076",
+                        "isGradebookItem": true,
+                        "attemptsToGrade": 0,
+                        "numSubmissions": 0,
+                        "activitySubtype": "cxp",
+                        "activityPath": "CXP:\/\/mtng_history\/henley_hist\/essay_3_pol.xml"
+                    }, {
+                        "id": 388,
+                        "name": "9.3 Parties and Philosophies",
+                        "description": "9.3 Parties and Philosophies",
+                        "nodeType": "Activity",
+                        "activityType": 2,
+                        "appActivityId": 19,
+                        "isCountsTowardFinalGrade": true,
+                        "maxPoints": 3,
+                        "pointsPossible": 3,
+                        "isTimed": false,
+                        "maxAttempts": 1,
+                        "scoreStrategy": 1,
+                        "isManuallyGraded": false,
+                        "isExtended": false,
+                        "refId": "036705b3-ea44-4fc9-8450-0d5b684d5cc6",
+                        "isGradebookItem": true,
+                        "attemptsToGrade": 0,
+                        "numSubmissions": 1,
+                        "classAverage": 0,
+                        "activitySubtype": "cxp",
+                        "activityPath": "CXP:\/\/mtng_history\/henley_hist\/9.3.xml"
+                    }, {
+                        "id": 474,
+                        "name": "MATT",
+                        "description": "TEST",
+                        "nodeType": "Activity",
+                        "activityType": 2,
+                        "appActivityId": 23,
+                        "isCountsTowardFinalGrade": true,
+                        "maxPoints": 100,
+                        "pointsPossible": 100,
+                        "isTimed": false,
+                        "endDate": 1412132400000,
+                        "maxAttempts": 2,
+                        "scoreStrategy": 1,
+                        "isManuallyGraded": false,
+                        "isExtended": false,
+                        "refId": "ztest-d3aecac6-6c6f-b649e",
+                        "isGradebookItem": true,
+                        "attemptsToGrade": 0,
+                        "numSubmissions": 1,
+                        "classAverage": 84,
+                        "activitySubtype": ""
+                    }, {
+                        "id": 509,
+                        "name": "Hello world",
+                        "description": "",
+                        "nodeType": "Activity",
+                        "activityType": 2,
+                        "appActivityId": 21,
+                        "isCountsTowardFinalGrade": true,
+                        "maxPoints": 100,
+                        "pointsPossible": 100,
+                        "isTimed": false,
+                        "endDate": 1412046000000,
+                        "maxAttempts": 3,
+                        "scoreStrategy": 1,
+                        "isManuallyGraded": false,
+                        "isExtended": false,
+                        "refId": "ztest-a803739d-a37a-faa46",
+                        "isGradebookItem": true,
+                        "attemptsToGrade": 0,
+                        "numSubmissions": 1,
+                        "activitySubtype": ""
+                    }]
+                }, {
+                    "id": 205,
+                    "name": "Unit 2: Contact and Exploration, 1492–1565",
+                    "nodeType": "LearningUnit",
+                    "children": [{
+                        "id": 510,
+                        "name": "3.6 Why Does This Matter? Essay Activity: Political Lens",
+                        "description": "3.6 Why Does This Matter? Essay Activity: Political Lens",
+                        "nodeType": "Activity",
+                        "activityType": 2,
+                        "appActivityId": 19,
+                        "isCountsTowardFinalGrade": true,
+                        "maxPoints": 10,
+                        "pointsPossible": 10,
+                        "isTimed": false,
+                        "endDate": 1412132400000,
+                        "maxAttempts": 1,
+                        "scoreStrategy": 1,
+                        "isManuallyGraded": true,
+                        "isExtended": false,
+                        "refId": "9abb2536-ff1c-4cdc-8004-30519fd2f4d6",
+                        "isGradebookItem": true,
+                        "attemptsToGrade": 0,
+                        "numSubmissions": 0,
+                        "classAverage": 0,
+                        "activitySubtype": "cxp",
+                        "activityPath": "CXP:\/\/mtng_history\/henley_hist\/essay_3_pol.xml"
+                    }]
+                }, {
+                    "id": 361,
+                    "name": "5.1 Picturing History",
+                    "description": "5.1 Picturing History",
+                    "nodeType": "Activity",
+                    "activityType": 2,
+                    "appActivityId": 19,
+                    "isCountsTowardFinalGrade": true,
+                    "maxPoints": 10,
+                    "pointsPossible": 10,
+                    "isTimed": false,
+                    "endDate": 1402974000000,
+                    "maxAttempts": 1,
+                    "scoreStrategy": 1,
+                    "isManuallyGraded": true,
+                    "isExtended": false,
+                    "refId": "d2f5ef67-0efc-4ef1-beb0-7ae3a2e0a550",
+                    "isGradebookItem": true,
+                    "attemptsToGrade": 0,
+                    "numSubmissions": 0,
+                    "classAverage": 0,
+                    "activityPath": "CXP:\/\/mtng_history\/henley_hist\/5.1.xml"
+                }, {
+                    "id": 362,
+                    "name": "5.2 The Common People",
+                    "description": "5.2 The Common People",
+                    "nodeType": "Activity",
+                    "activityType": 2,
+                    "appActivityId": 19,
+                    "isCountsTowardFinalGrade": true,
+                    "maxPoints": 1,
+                    "pointsPossible": 1,
+                    "isTimed": false,
+                    "endDate": 1402974000000,
+                    "maxAttempts": 1,
+                    "scoreStrategy": 1,
+                    "isManuallyGraded": false,
+                    "isExtended": false,
+                    "refId": "288e28bd-6365-435c-9de7-7c4a5de7fd62",
+                    "isGradebookItem": true,
+                    "activityPath": "CXP:\/\/mtng_history\/henley_hist\/5.2.xml"
+                }]
+            }],
+            "items": [{
+                "id": 361,
+                "name": "5.1 Picturing History",
+                "description": "5.1 Picturing History",
+                "nodeType": "Activity",
+                "activityType": 2,
+                "appActivityId": 19,
+                "isCountsTowardFinalGrade": true,
+                "maxPoints": 10,
+                "pointsPossible": 10,
+                "isTimed": false,
+                "endDate": 1402974000000,
+                "maxAttempts": 1,
+                "scoreStrategy": 1,
+                "isManuallyGraded": true,
+                "isExtended": false,
+                "refId": "d2f5ef67-0efc-4ef1-beb0-7ae3a2e0a550",
+                "isGradebookItem": true,
+                "attemptsToGrade": 0,
+                "numSubmissions": 0,
+                "classAverage": 0,
+                "activityPath": "CXP:\/\/mtng_history\/henley_hist\/5.1.xml"
+            }, {
+                "id": 362,
+                "name": "5.2 The Common People",
+                "description": "5.2 The Common People",
+                "nodeType": "Activity",
+                "activityType": 2,
+                "appActivityId": 19,
+                "isCountsTowardFinalGrade": true,
+                "maxPoints": 1,
+                "pointsPossible": 1,
+                "isTimed": false,
+                "endDate": 1402974000000,
+                "maxAttempts": 1,
+                "scoreStrategy": 1,
+                "isManuallyGraded": false,
+                "isExtended": false,
+                "refId": "288e28bd-6365-435c-9de7-7c4a5de7fd62",
+                "isGradebookItem": true,
+                "activityPath": "CXP:\/\/mtng_history\/henley_hist\/5.2.xml"
+            }, {
+                "id": 358,
+                "name": "2.1 Picturing History",
+                "description": "2.1 Picturing History",
+                "nodeType": "Activity",
+                "activityType": 2,
+                "appActivityId": 19,
+                "isCountsTowardFinalGrade": true,
+                "maxPoints": 10,
+                "pointsPossible": 10,
+                "isTimed": false,
+                "endDate": 1402974000000,
+                "maxAttempts": 1,
+                "scoreStrategy": 1,
+                "isManuallyGraded": true,
+                "isExtended": false,
+                "refId": "1540ae25-8696-4758-880c-d89b892774da",
+                "isGradebookItem": true,
+                "attemptsToGrade": 0,
+                "numSubmissions": 0,
+                "activityPath": "CXP:\/\/mtng_history\/henley_hist\/2.1.xml"
+            }, {
+                "id": 359,
+                "name": "2.2 The First Americans",
+                "description": "2.2 The First Americans",
+                "nodeType": "Activity",
+                "activityType": 2,
+                "appActivityId": 19,
+                "isCountsTowardFinalGrade": true,
+                "maxPoints": 4,
+                "pointsPossible": 4,
+                "isTimed": false,
+                "endDate": 1402974000000,
+                "maxAttempts": 1,
+                "scoreStrategy": 1,
+                "isManuallyGraded": false,
+                "isExtended": false,
+                "refId": "60d9f93c-c0de-44af-9cda-ee1c96ab560a",
+                "isGradebookItem": true,
+                "attemptsToGrade": 0,
+                "numSubmissions": 0,
+                "activityPath": "CXP:\/\/mtng_history\/henley_hist\/2.2.xml"
+            }, {
+                "id": 360,
+                "name": "2.3 The Rise of New World Slavery",
+                "description": "2.3 The Rise of New World Slavery",
+                "nodeType": "Activity",
+                "activityType": 2,
+                "appActivityId": 19,
+                "isCountsTowardFinalGrade": true,
+                "maxPoints": 3,
+                "pointsPossible": 3,
+                "isTimed": false,
+                "endDate": 1407985200000,
+                "maxAttempts": 1,
+                "scoreStrategy": 1,
+                "isManuallyGraded": false,
+                "isExtended": true,
+                "refId": "3c1c9ce8-a1fb-49d6-8ed6-5dc4e380ec8a",
+                "isGradebookItem": true,
+                "attemptsToGrade": 0,
+                "numSubmissions": 0,
+                "classAverage": 33.31,
+                "activityPath": "CXP:\/\/mtng_history\/henley_hist\/2.3.xml"
+            }, {
+                "id": 384,
+                "name": "1.7 Study Guide",
+                "description": "1.7 Study Guide",
+                "nodeType": "Activity",
+                "activityType": 2,
+                "appActivityId": 19,
+                "isCountsTowardFinalGrade": true,
+                "maxPoints": 25,
+                "pointsPossible": 25,
+                "isTimed": false,
+                "endDate": 1404270000000,
+                "maxAttempts": 1,
+                "scoreStrategy": 1,
+                "isManuallyGraded": false,
+                "isExtended": false,
+                "refId": "174ba2bb-65d5-4d97-be05-93dd95bcd808",
+                "isGradebookItem": true,
+                "attemptsToGrade": 0,
+                "numSubmissions": 0,
+                "classAverage": 96,
+                "activityPath": "CXP:\/\/mtng_history\/review_challenge_hist\/1.7.xml"
+            }, {
+                "id": 385,
+                "name": "1.6 Getting to the Source: Political Lens",
+                "description": "1.6 Getting to the Source: Political Lens",
+                "nodeType": "Activity",
+                "activityType": 2,
+                "appActivityId": 19,
+                "isCountsTowardFinalGrade": true,
+                "maxPoints": 8,
+                "pointsPossible": 8,
+                "isTimed": false,
+                "endDate": 1405393200000,
+                "maxAttempts": 1,
+                "scoreStrategy": 1,
+                "isManuallyGraded": false,
+                "isExtended": false,
+                "refId": "36c98110-edb0-424b-bde4-cf5a6a01e16b",
+                "isGradebookItem": true,
+                "attemptsToGrade": 0,
+                "numSubmissions": 1,
+                "classAverage": 12.5,
+                "activitySubtype": "cxp",
+                "activityPath": "CXP:\/\/mtng_history\/henley_hist\/psa_1_pol.xml"
+            }, {
+                "id": 387,
+                "name": "3.6 Why Does This Matter? Essay Activity: Political Lens",
+                "description": "3.6 Why Does This Matter? Essay Activity: Political Lens",
+                "nodeType": "Activity",
+                "activityType": 2,
+                "appActivityId": 19,
+                "isCountsTowardFinalGrade": true,
+                "maxPoints": 10,
+                "pointsPossible": 10,
+                "isTimed": false,
+                "endDate": 1407380400000,
+                "maxAttempts": 1,
+                "scoreStrategy": 1,
+                "isManuallyGraded": true,
+                "isExtended": false,
+                "refId": "b32d1871-5524-41e1-a1fe-5ad8f8f5d076",
+                "isGradebookItem": true,
+                "attemptsToGrade": 0,
+                "numSubmissions": 0,
+                "activitySubtype": "cxp",
+                "activityPath": "CXP:\/\/mtng_history\/henley_hist\/essay_3_pol.xml"
+            }, {
+                "id": 388,
+                "name": "9.3 Parties and Philosophies",
+                "description": "9.3 Parties and Philosophies",
+                "nodeType": "Activity",
+                "activityType": 2,
+                "appActivityId": 19,
+                "isCountsTowardFinalGrade": true,
+                "maxPoints": 3,
+                "pointsPossible": 3,
+                "isTimed": false,
+                "maxAttempts": 1,
+                "scoreStrategy": 1,
+                "isManuallyGraded": false,
+                "isExtended": false,
+                "refId": "036705b3-ea44-4fc9-8450-0d5b684d5cc6",
+                "isGradebookItem": true,
+                "attemptsToGrade": 0,
+                "numSubmissions": 1,
+                "classAverage": 0,
+                "activitySubtype": "cxp",
+                "activityPath": "CXP:\/\/mtng_history\/henley_hist\/9.3.xml"
+            }, {
+                "id": 474,
+                "name": "MATT",
+                "description": "TEST",
+                "nodeType": "Activity",
+                "activityType": 2,
+                "appActivityId": 23,
+                "isCountsTowardFinalGrade": true,
+                "maxPoints": 100,
+                "pointsPossible": 100,
+                "isTimed": false,
+                "endDate": 1412132400000,
+                "maxAttempts": 2,
+                "scoreStrategy": 1,
+                "isManuallyGraded": false,
+                "isExtended": false,
+                "refId": "ztest-d3aecac6-6c6f-b649e",
+                "isGradebookItem": true,
+                "attemptsToGrade": 0,
+                "numSubmissions": 1,
+                "classAverage": 84,
+                "activitySubtype": ""
+            }, {
+                "id": 509,
+                "name": "Hello world",
+                "description": "",
+                "nodeType": "Activity",
+                "activityType": 2,
+                "appActivityId": 21,
+                "isCountsTowardFinalGrade": true,
+                "maxPoints": 100,
+                "pointsPossible": 100,
+                "isTimed": false,
+                "endDate": 1412046000000,
+                "maxAttempts": 3,
+                "scoreStrategy": 1,
+                "isManuallyGraded": false,
+                "isExtended": false,
+                "refId": "ztest-a803739d-a37a-faa46",
+                "isGradebookItem": true,
+                "attemptsToGrade": 0,
+                "numSubmissions": 1,
+                "activitySubtype": ""
+            }, {
+                "id": 510,
+                "name": "3.6 Why Does This Matter? Essay Activity: Political Lens",
+                "description": "3.6 Why Does This Matter? Essay Activity: Political Lens",
+                "nodeType": "Activity",
+                "activityType": 2,
+                "appActivityId": 19,
+                "isCountsTowardFinalGrade": true,
+                "maxPoints": 10,
+                "pointsPossible": 10,
+                "isTimed": false,
+                "endDate": 1412132400000,
+                "maxAttempts": 1,
+                "scoreStrategy": 1,
+                "isManuallyGraded": true,
+                "isExtended": false,
+                "refId": "9abb2536-ff1c-4cdc-8004-30519fd2f4d6",
+                "isGradebookItem": true,
+                "attemptsToGrade": 0,
+                "numSubmissions": 0,
+                "classAverage": 0,
+                "activitySubtype": "cxp",
+                "activityPath": "CXP:\/\/mtng_history\/henley_hist\/essay_3_pol.xml"
+            }]
+        }
+
+## Activity Overrides [/progressapp/service/items/useroverride/{snapshotId} ]
+### List all student specific activity overrides  [GET]
++ Response 200 (application/json)
+
+        [
+          {
+            "activityId": 358,
+            "endDate": 1402974000001,
+            "userId": 8
+          }
+        ]
+        
+## Activity Metadata [/progressapp/service/{snapshotId}/item/{activityId}]
+### List single activity metadata [GET]
++ Response 200 (application/json)
+
+        {
+            "id": 360,
+            "name": "2.3 The Rise of New World Slavery",
+            "description": "2.3 The Rise of New World Slavery",
+            "nodeType": "Activity",
+            "activityType": 2,
+            "appActivityId": 19,
+            "isCountsTowardFinalGrade": true,
+            "maxPoints": 3,
+            "pointsPossible": 3,
+            "isTimed": false,
+            "endDate": 1407985200000,
+            "maxAttempts": 1,
+            "scoreStrategy": 1,
+            "isManuallyGraded": false,
+            "isExtended": true,
+            "refId": "3c1c9ce8-a1fb-49d6-8ed6-5dc4e380ec8a",
+            "isGradebookItem": true,
+            "attemptsToGrade": 0,
+            "numSubmissions": 0,
+            "classAverage": 33.31,
+            "activityPath": "CXP:\/\/mtng_history\/henley_hist\/2.3.xml"
+        }
+
+## Activity Comments [/nb/service/activityComment/snapshot/{snapshotId}/user/{userId}]
+### List students activity comments  [GET]
++ Response 200 (application/json)
+
+        [358, 362]
+        
+## Activity Comment Details [/nb/service/activityComment/find?userId={userId}&activityId={activityId}&sort=lastModifiedDate+desc&limit=5]
+### Find student activity comments  [GET]
++ Response 200 (application/json)
+
+        {
+            "count": 1,
+            "data": [
+                {
+                    "id": 2,
+                    "comment": "{\"oldScore\":\"0%\",\"newScore\":\"80%\",\"isImport\":false}",
+                    "userId": 8,
+                    "activityId": 358,
+                    "createdBy": 9,
+                    "createdByUser": "Mtdev Inst1",
+                    "lastModifiedDate": 1420819743580,
+                    "type": 1
+                },
+                {
+                    "id": 1,
+                    "comment": "{\"oldDueDate\":1457755200000, \"newDueDate\":1422072000000}",
+                    "userId": 8,
+                    "activityId": 362,
+                    "createdBy": 9,
+                    "createdByUser": "Mtdev Inst1",
+                    "lastModifiedDate": 1420819692836,
+                    "type": 2
+                }
+            ]
+        }
+        
+# Group Categories
+These ends points provide general information on grading categories, along with gradebook specific data.
+## All Categories [/progressapp/service/bulk/itemsByCategory/{snapshotId} ]
+### List all categories in a snapshot [GET]
++ Response 200 (application/json)
+
+        {
+            "isUseWeights": false,
+            "categories": [{
+                "id": null,
+                "name": "uncategorized",
+                "weight": null,
+                "items": [{
+                    "id": null,
+                    "categoryId": null,
+                    "activityId": 361,
+                    "name": "5.1 Picturing History",
+                    "maxScore": 10.0,
+                    "isCountsTowardFinalGrade": true
+                }, {
+                    "id": null,
+                    "categoryId": null,
+                    "activityId": 362,
+                    "name": "5.2 The Common People",
+                    "maxScore": 1.0,
+                    "isCountsTowardFinalGrade": true
+                }, {
+                    "id": null,
+                    "categoryId": null,
+                    "activityId": 358,
+                    "name": "2.1 Picturing History",
+                    "maxScore": 10.0,
+                    "isCountsTowardFinalGrade": true
+                }, {
+                    "id": null,
+                    "categoryId": null,
+                    "activityId": 359,
+                    "name": "2.2 The First Americans",
+                    "maxScore": 4.0,
+                    "isCountsTowardFinalGrade": true
+                }, {
+                    "id": null,
+                    "categoryId": null,
+                    "activityId": 360,
+                    "name": "2.3 The Rise of New World Slavery",
+                    "maxScore": 3.0,
+                    "isCountsTowardFinalGrade": true
+                }, {
+                    "id": null,
+                    "categoryId": null,
+                    "activityId": 384,
+                    "name": "1.7 Study Guide",
+                    "maxScore": 25.0,
+                    "isCountsTowardFinalGrade": true
+                }, {
+                    "id": null,
+                    "categoryId": null,
+                    "activityId": 385,
+                    "name": "1.6 Getting to the Source: Political Lens",
+                    "maxScore": 8.0,
+                    "isCountsTowardFinalGrade": true
+                }, {
+                    "id": null,
+                    "categoryId": null,
+                    "activityId": 387,
+                    "name": "3.6 Why Does This Matter? Essay Activity: Political Lens",
+                    "maxScore": 10.0,
+                    "isCountsTowardFinalGrade": true
+                }, {
+                    "id": null,
+                    "categoryId": null,
+                    "activityId": 388,
+                    "name": "9.3 Parties and Philosophies",
+                    "maxScore": 3.0,
+                    "isCountsTowardFinalGrade": true
+                }, {
+                    "id": null,
+                    "categoryId": null,
+                    "activityId": 474,
+                    "name": "MATT",
+                    "maxScore": 100.0,
+                    "isCountsTowardFinalGrade": true
+                }, {
+                    "id": null,
+                    "categoryId": null,
+                    "activityId": 509,
+                    "name": "Hello world",
+                    "maxScore": 100.0,
+                    "isCountsTowardFinalGrade": true
+                }, {
+                    "id": null,
+                    "categoryId": null,
+                    "activityId": 510,
+                    "name": "3.6 Why Does This Matter? Essay Activity: Political Lens",
+                    "maxScore": 10.0,
+                    "isCountsTowardFinalGrade": true
+                }]
+            }]
+        }
+        
+# Group Student Grades
+## All Course Grades [/progressapp/service/studentSummaries/{snapshotId}]
+### List all student course grades [GET]
++ Response 200 (application/json)
+
+        {
+            "timestamp": 1419012115362,
+            "studentSummaries": [
+                {
+                    "firstName": "Mock",
+                    "lastName": "Student1",
+                    "email": "mock_stud1@test.com",
+                    "studentId": "14567",
+                    "orgId": 505,
+                    "userId": 8,
+                    "sourceId": "70346a98d5ed8e75:25a9da2e:13f782479fd:-7832",
+                    "finalScore": 69.2,
+                    "pointsPossible": 159,
+                    "pointsEarned": 110
+                }
+            ]
+        }
+        
+## Specific Course Grade [/progressapp/service/studentSummaries/{snapshotId}/user/{userId} ]
+### Specific student course grade [GET]
++ Response 200 (application/json)
+
+        {
+            "firstName": "Mock",
+            "lastName": "Student1",
+            "email": "mock_stud1@test.com",
+            "studentId": "14567",
+            "orgId": 505,
+            "userId": 8,
+            "sourceId": "70346a98d5ed8e75:25a9da2e:13f782479fd:-7832",
+            "finalScore": 69.2,
+            "pointsPossible": 159,
+            "pointsEarned": 110
+        }
+        
+## Current Course Grade [/progressapp/service/studentSummaries/{snapshotId}/user/me ]
+### Current student course grade [GET]
++ Response 200 (application/json)
+
+        {
+            "firstName": "Mock",
+            "lastName": "Student1",
+            "email": "mock_stud1@test.com",
+            "studentId": "14567",
+            "orgId": 505,
+            "userId": 8,
+            "sourceId": "70346a98d5ed8e75:25a9da2e:13f782479fd:-7832",
+            "finalScore": 69.2,
+            "pointsPossible": 159,
+            "pointsEarned": 110
+        }
+
+## All Activity Grades [/progressapp/service/outcome/{snapshotId}?userIds=%5B{studentIds}%5D]
+### List all students activity grades [GET]
++ Response 200 (application/json)
+
+        {
+            "8": 
+            [
+                {
+                    "pointsEarned": 3,
+                    "pointsPossible": 4,
+                    "recordedPercent": 75.0,
+                    "activityId": 359,
+                    "attemptCount": 1
+                }
+            ]
+        }
+
+## Single Activity Grades [/progressapp/service/outcome/{snapshotId}/activity/{activityId}]
+### List all students grades for specific activity [GET]
++ Response 200 (application/json)
+
+        [
+            {
+                "pointsEarned": 3,
+                "pointsPossible": 4,
+                "recordedPercent": 75.0,
+                "activityId": 359,
+                "attemptCount": 1,
+                "userId": 8
+            }
+        ]
+
+## Single Student Activity Grade [/progressapp/service/outcome/{snapshotId}/{activityId}/{userId}]
+### List single student grade for single activity [GET]
++ Response 200 (application/json)
+
+        {
+            "pointsEarned": 3,
+            "pointsPossible": 4,
+            "recordedPercent": 75.0,
+            "activityId": 359,
+            "attemptCount": 1,
+            "userId": 8
+        }
+
+## Single Student Activity Attempt Grades [/progressapp/service/{snapshotId}/attempt/{activityId}/user/{userId}]
+### List specified student attempt grades [GET]
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 72667,
+                "activityId": 359,
+                "effectiveScore": 4,
+                "pointsEarned": 3,
+                "maxPoints": 4,
+                "status": 2,
+                "userId": 8,
+                "isGraded": true,
+                "isDeleted": false,
+                "isStudentTake": true,
+                "takeId": "bb5dc842-5072-413a-a57e-9725b6cd0ab0",
+                "submissionDate": 1417515409827
+            }
+        ]
+        
+## Single Student Attempt Grade [/progressapp/service/{snapshotId}/attempt/{attemptId}]
+### List specified student attempt grades [GET]
++ Response 200 (application/json)
+
+        {
+            "id": 72667,
+            "activityId": 359,
+            "effectiveScore": 4,
+            "pointsEarned": 3,
+            "maxPoints": 4,
+            "status": 2,
+            "userId": 8,
+            "isGraded": true,
+            "isDeleted": false,
+            "isStudentTake": true,
+            "takeId": "bb5dc842-5072-413a-a57e-9725b6cd0ab0",
+            "submissionDate": 1417515409827
+        }
+
+## Course Score Breakdown [/progressapp/service/scores/{snapshotId}/user/{userId}/summary ]
+### Specific student course score breakdown [GET]
++ Response 200 (application/json)
+
+        {
+            "categories": [
+                {
+                    "categoryId": 3,
+                    "categoryName": "matt2",
+                    "weight": 100,
+                    "categoryPointsEarned": 51,
+                    "categoryPointsPossible": 100,
+                    "activities": [
+                        {
+                            "activityId": 359,
+                            "activityName": "Matt Activity",
+                            "pointsEarned": 51,
+                            "pointsPossible": 100
+                        }
+                    ]
+                },
+                {
+                    "categoryName": "uncategorized",
+                    "weight": 0,
+                    "activities": []
+                }
+            ],
+            "weightedScore": 0.51,
+            "totalPointsEarned": 51,
+            "totalPointsPossible": 100,
+            "isWeightingEnabled": true
+        }
+
+## Manual Grading Information [/progressapp/service/appActivities/{snapshotId} ]
+### List all activities with their app specific grading settings [GET]
++ Response 200 (application/json)
+
+        [{
+            "appActivityId": 1,
+            "appId": 1,
+            "isPerStudentEndDateSupported": false,
+            "isReviewWithoutTakesSupported": false
+        }, {
+            "appActivityId": 2,
+            "appId": 1,
+            "isPerStudentEndDateSupported": false,
+            "isReviewWithoutTakesSupported": false
+        }, {
+            "appActivityId": 3,
+            "appId": 3,
+            "isPerStudentEndDateSupported": false,
+            "isReviewWithoutTakesSupported": false
+        }, {
+            "appActivityId": 4,
+            "appId": 3,
+            "isPerStudentEndDateSupported": false,
+            "isReviewWithoutTakesSupported": false
+        }, {
+            "appActivityId": 5,
+            "appId": 5,
+            "isPerStudentEndDateSupported": true,
+            "isReviewWithoutTakesSupported": true
+        }, {
+            "appActivityId": 6,
+            "appId": 5,
+            "isPerStudentEndDateSupported": true,
+            "isReviewWithoutTakesSupported": true
+        }, {
+            "appActivityId": 7,
+            "appId": 6,
+            "isPerStudentEndDateSupported": false,
+            "isReviewWithoutTakesSupported": false
+        }, {
+            "appActivityId": 8,
+            "appId": 8,
+            "isPerStudentEndDateSupported": false,
+            "isReviewWithoutTakesSupported": false
+        }, {
+            "appActivityId": 9,
+            "appId": 9,
+            "isPerStudentEndDateSupported": false,
+            "isReviewWithoutTakesSupported": false
+        }, {
+            "appActivityId": 10,
+            "appId": 9,
+            "isPerStudentEndDateSupported": false,
+            "isReviewWithoutTakesSupported": false
+        }, {
+            "appActivityId": 11,
+            "appId": 10,
+            "isPerStudentEndDateSupported": false,
+            "isReviewWithoutTakesSupported": false
+        }, {
+            "appActivityId": 12,
+            "appId": 10,
+            "isPerStudentEndDateSupported": false,
+            "isReviewWithoutTakesSupported": false
+        }, {
+            "appActivityId": 13,
+            "appId": 12,
+            "isPerStudentEndDateSupported": false,
+            "isReviewWithoutTakesSupported": false
+        }, {
+            "appActivityId": 14,
+            "appId": 12,
+            "isPerStudentEndDateSupported": false,
+            "isReviewWithoutTakesSupported": false
+        }, {
+            "appActivityId": 17,
+            "appId": 14,
+            "isPerStudentEndDateSupported": false,
+            "isReviewWithoutTakesSupported": false
+        }, {
+            "appActivityId": 18,
+            "appId": 14,
+            "isPerStudentEndDateSupported": false,
+            "isReviewWithoutTakesSupported": false
+        }, {
+            "appActivityId": 19,
+            "appId": 15,
+            "isPerStudentEndDateSupported": true,
+            "isReviewWithoutTakesSupported": true
+        }, {
+            "appActivityId": 20,
+            "appId": 15,
+            "isPerStudentEndDateSupported": true,
+            "isReviewWithoutTakesSupported": true
+        }, {
+            "appActivityId": 21,
+            "appId": 17,
+            "isPerStudentEndDateSupported": true,
+            "isReviewWithoutTakesSupported": false,
+            "gradeURL": "http:\/\/localhost\/ztest\/CLUIChamber.jsp?action=grade&mtenv=http://localhost",
+            "gradeAlwaysEnabled": false,
+            "gradeLabel": ""
+        }, {
+            "appActivityId": 22,
+            "appId": 17,
+            "isPerStudentEndDateSupported": true,
+            "isReviewWithoutTakesSupported": false,
+            "gradeURL": "http:\/\/localhost\/ztest\/CLUIChamber.jsp?action=grade&mtenv=http://localhost&app=ZTest",
+            "gradeAlwaysEnabled": false,
+            "gradeLabel": ""
+        }, {
+            "appActivityId": 23,
+            "appId": 17,
+            "isPerStudentEndDateSupported": true,
+            "isReviewWithoutTakesSupported": false,
+            "gradeURL": "http:\/\/localhost\/ztest\/CLUIChamber.jsp?action=grade&mtenv=http://localhost",
+            "gradeAlwaysEnabled": false,
+            "gradeLabel": ""
+        }]
+        
+# Group Client Side Events
+The PA Client sends/receives a number of client side messages using the browsers postMessage() feature.  There are a few specific events, but the main mechanism is done by either publishing using Clui.hub.pub("EventName", "EventData") or subscribing using Clui.hub.sub("EventName", callback).
+
+## Specific Events
+### Get SSO Token
++ Description: Retrieves the SSO token from the main MT window.
++ Mechanism: Clui.attempt.refresh(function(){}, refId, attemptId);
+
+### Attempt Refresh
++ Description: Force a refresh on the activity attempt.
++ Mechanism: Clui.attempt.refresh(function(){}, refId, attemptId);
+
+### Get Analytics URL
++ Description: Retrieve the consentric sky analytics url.
++ Mechanism: Clui.mindtap.get('mindtap.analyticsUrl');
+
+## Published Events (Clui.hub.pub)
+### Launch Take
++ EventName: "progress.launchTake"
++ Data (application/json)
+
+### Launch Manual Grading
++ EventName: "action.grade.ACTIVITY"
++ Data (application/json)
+
+### Resize Progress App
++ EventName: "activity.panel.resize"
++ Data (application/json)
+
+### Send Analytics Message
++ EventName: "analytics.messagecenter.send"
++ Data (application/json)
+
+## Subscribed Events (Clui.hub.sub)
+### Activity Reload
++ EventName: "activity.reload"
++ Behavior: Refresh the PA grade data and reload the grid. Happens when logged in as student and an activity is taken from another frame.
+        
