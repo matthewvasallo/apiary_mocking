@@ -68,3 +68,26 @@ This document is being used a quick an easy way to document MT3 current Gradeboo
                     }
             }
         }
+        
+# Group Student Grades
+## All Course Grades [/progressapp/service/studentSummaries/{snapshotId}]
+### List all student course grades [GET]
++ Response 200 (application/json)
+
+        {
+            "timestamp": 1428945188363,
+            "studentSummaries": [
+                {
+                    "firstName": "Mock 1",
+                    "lastName": "Student",
+                    "email": "userone@ng.com",
+                    "studentId": "87787",
+                    "orgId": 13414,
+                    "userId": 929,
+                    "sourceId": "5cdc7afabbc6f418:-49ff5186:13093bc2109:-7e38",
+                    "finalScore": 46.5,
+                    "pointsPossible": 847,
+                    "pointsEarned": 214
+                }
+            ]
+        }
