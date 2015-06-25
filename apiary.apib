@@ -92,6 +92,24 @@ This document is being used a quick an easy way to document MT3 current Gradeboo
             ]
         }
         
+## Course Info [/progressapp/service/courseInfo/{snapshotId}]
+General course information, along with gradebook specific data.
+### List current course information [GET]
++ Response 200 (application/json)
+
+            {
+                "startDate": 1393995600000,
+                "endDate": 1443239999000,
+                "isMaster": false,
+                "courseKey": "MTPPLJ3PN4RC",
+                "timezone": "America/New_York",
+                "timezoneCd": "EDT",
+                "snapshotId": 29958,
+                "isbn": "9781133354215",
+                "numStudents": 1,
+                "scoreAverage": 42.2
+            }
+        
 ## All Activity Grades [/progressapp/service/outcome/{snapshotId}?userIds=%5B{studentIds}%5D]
 ### List all students activity grades [GET]
 + Response 200 (application/json)
